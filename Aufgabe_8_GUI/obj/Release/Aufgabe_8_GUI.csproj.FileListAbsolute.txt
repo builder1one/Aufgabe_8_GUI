@@ -1,0 +1,25 @@
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.Form1.resources
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.Properties.Resources.resources
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.Form1.aa-ET.resources
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.csproj.GenerateResource.cache
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.csproj.CoreCompileInputs.cache
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\bin\Release\8_17642_Anwendung.exe.config
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\bin\Release\8_17642_Anwendung.exe
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\bin\Release\8_17642_Anwendung.pdb
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\bin\Release\aa-ET\8_17642_Anwendung.resources.dll
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\aa-ET\8_17642_Anwendung.resources.dll
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\8_17642_Anwendung.exe
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\8_17642_Anwendung.pdb
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\bin\Release\8_17642_Anwendung.exe.config
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\bin\Release\8_17642_Anwendung.exe
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\bin\Release\8_17642_Anwendung.pdb
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\bin\Release\aa-ET\8_17642_Anwendung.resources.dll
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.csprojAssemblyReference.cache
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.Form1.resources
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.Properties.Resources.resources
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.Form1.aa-ET.resources
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.csproj.GenerateResource.cache
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.csproj.CoreCompileInputs.cache
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\aa-ET\8_17642_Anwendung.resources.dll
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\8_17642_Anwendung.exe
+C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\8_17642_Anwendung.pdb
