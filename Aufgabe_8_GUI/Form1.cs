@@ -11,9 +11,6 @@ using System.Windows.Forms;
 // Using Anweisung für verwendete Klasse
 using WindowsFormsApplication2;
 
-// Hinzufügen von System.Threading, um Multithreading zu ermöglichen. Dies verhindert Unterbrechungen der Bedienbarkeit des Programmes, bei komplexen Rechnungen.
-using System.Threading;
-
 /// <summary>
 /// Programm um den Kapitalanstieg über n Jahre zu berechnen, bei gegebenen Zinssatz und gegebenen Startkapital.
 /// </summary>
@@ -25,6 +22,15 @@ namespace Aufgabe_8_GUI
 
         // Erstellen eines neuen Objekts der Klasse "_8_17470_Klasse"
         _8_17470_Klasse kapitalertrag = new _8_17470_Klasse();
+
+        // Variablen für die Multithreading (asynchrone) Berechnung des Zinssatzes und die anderen Berechnungen.
+        private double Kapital { get; set; }
+        private double StartKapital { get; set; }
+        private double Ziel { get; set; }
+        private double Zinssatz { get; set; }
+        private DateTime RechnungsStart { get; set; }
+        TimeSpan RechenZeit { get; set; }
+        private int Jahre { get; set; }
 
         public Form1()
         {
@@ -39,8 +45,9 @@ namespace Aufgabe_8_GUI
             // Graph füllen mit Vorgabewerten, damit der Graph beim Start nicht leer ist.
             fillChart();
 
-            Thread kapital = new Thread(new ThreadStart(this.KapitalBerechnen));
-            kapital.Start();
+            // Einstellungen für den Backgroundworker
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
         }
 
         /// <summary>
@@ -80,7 +87,7 @@ namespace Aufgabe_8_GUI
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            this.GraphErstellen();
+            GraphErstellen();
         }
 
         /// <summary>
@@ -151,7 +158,7 @@ namespace Aufgabe_8_GUI
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                this.GraphErstellen();
+                GraphErstellen();
             }
             else if (e.KeyCode == Keys.Up && textBox2.Visible)
             {
@@ -178,7 +185,7 @@ namespace Aufgabe_8_GUI
 
             if (e.KeyCode == Keys.Enter)
             {
-                this.GraphErstellen();
+                GraphErstellen();
             }
             else if (e.KeyCode == Keys.Up && textBox3.Visible)
             {
@@ -382,7 +389,7 @@ namespace Aufgabe_8_GUI
                 }
                 if (kapital > ziel)
                     label4.Text = String.Format("Es werden {0} {1} benötigt, bis das gewünschte Kapital erreicht wurde." + Environment.NewLine +
-                        "Es sind noch {1} Euro über.", i, (kapital - ziel).ToString("0.00"), label1.Text.Substring(0, label1.Text.Length - 1));
+                        "Es sind noch {2} Euro über.", i, label1.Text.Substring(0, label1.Text.Length - 1), (kapital - ziel).ToString("0.00"), label1.Text.Substring(0, label1.Text.Length - 1));
                 else
                     label4.Text = String.Format("Es werden {0} {1} benötigt, bis das gewünschte Kapital erreicht wurde.", i, label1.Text.Substring(0, label1.Text.Length-1));
             }
@@ -391,7 +398,7 @@ namespace Aufgabe_8_GUI
                 // Ausgabe aeiner Fehlermeldung in Label4
                 label4.Text = "Alle Felder müssen richtig ausgefüllt sein!";
             }
-        }
+        } 
 
         /// <summary>
         /// Berechnet das Kapital, bei gegebenem Zinssatz, Startkapital und einer bestimmten Zahl an Jahren.
@@ -418,11 +425,11 @@ namespace Aufgabe_8_GUI
                 double zuwachs = kapital / Convert.ToDouble(textBox2.Text);
                 // Prüfen ob Kapital gestiegen oder gesunken bzw. gleich.
                 if (zuwachs >= 1)
-                    label4.Text = String.Format("Der Kontostand am Ende beträgt {0} Euro." + Environment.NewLine +
-                        "Das Kapital ist um den Faktor {1} gestiegen.", kapital.ToString("0.00"), Math.Round(zuwachs, 3));
+                    label4.Text = String.Format("Der Kontostand beträgt nach {0} {1}n {2} Euro." + Environment.NewLine +
+                        "Das Kapital ist um den Faktor {3} gestiegen.", textBox1.Text, label1.Text.Substring(0, label1.Text.Length - 1), kapital.ToString("0.00"), Math.Round(zuwachs, 3));
                 else
-                    label4.Text = String.Format("Der Kontostand am Ende beträgt {0} Euro. " + Environment.NewLine +
-                        "Das Kapital ist um den Faktor {1} gesunken.", kapital.ToString("0.00"), Math.Round(zuwachs, 3));
+                    label4.Text = String.Format("Der Kontostand beträgt nach {0} {1}n {2} Euro." + Environment.NewLine +
+                        "Das Kapital ist um den Faktor {3} gesunken.", textBox1.Text, label1.Text.Substring(0, label1.Text.Length - 1), kapital.ToString("0.00"), Math.Round(zuwachs, 3));
             }
             catch (Exception) // Wird ausgeführt, wenn Fehler aufgetreten ist.
             {
@@ -439,40 +446,26 @@ namespace Aufgabe_8_GUI
             // Ruft die Methode zum ändern der Textbox Farbe auf.
             TextboxFarbe();
 
-            double kapital = 0;
-
             // Variable für die gewünschte Rechengenauigkeit. (Zinssatz für die Berechnung)
             double genauigkeit = 0.01 / trackBar1.Value;
 
             // Try um leere Felder bzw. falsche Eingaben abzufangen.
             try
             {
-                kapital = Convert.ToDouble(textBox2.Text);
-                double ziel = Convert.ToDouble(textBox4.Text);
+                Kapital = Convert.ToDouble(textBox2.Text);
+                Ziel = Convert.ToDouble(textBox4.Text);
 
                 // Verwendeter Zinssatz entspricht der Genauigkeit.
-                double zinssatz = genauigkeit;
+                Zinssatz = genauigkeit;
 
-                // Iteratives berechnen des Zinssatzes mit einer genauigkeit von 0.001%. Durch erhöhen des Zinssatzes, bis dieser ausreichend.
-                while (kapital <= ziel)
+                if (backgroundWorker1.IsBusy != true)
                 {
-                    // Kapitalberechnen für geschätzten Zinssatz.
-                    kapital = kapitalertrag.kapitalNeu(Convert.ToInt32(textBox1.Text), Convert.ToDouble(textBox2.Text), zinssatz);
-                    zinssatz = zinssatz + 0.001;
-                }
-
-                // Erstellen des Graphen für den berechneten Zinssatz 
-                chart1.Series["Kapital"].Points.AddXY(0, textBox2.Text);
-
-                for (int i = 1; i <= Convert.ToInt32(textBox1.Text); i++)
+                    // Start the asynchronous operation.
+                    backgroundWorker1.RunWorkerAsync();
+                } else
                 {
-                    kapital = kapitalertrag.kapitalNeu(i, Convert.ToDouble(textBox2.Text),zinssatz);
-                    chart1.Series["Kapital"].Points.AddXY(i, kapital);
-                }
-
-                // Ausgabe des Zinssatzes, welcher benötigt wird und der genutzten Genauigkeit.
-                label4.Text = String.Format("Der benötige Zinssatz beträgt {0} Prozent." + Environment.NewLine +
-                    "(Genauigkeit {1}) pro {2}.", Math.Round(zinssatz,6), Math.Round(genauigkeit,5), label1.Text.Substring(0, label1.Text.Length - 2));
+                    label4.Text = "Rechnung aktiv";
+                }            
             }
             catch (Exception)
             {
@@ -511,7 +504,7 @@ namespace Aufgabe_8_GUI
                 }
 
                 // Ausgabe des Startkapitals das benötigt wird.
-                label4.Text = String.Format("Das benötigte Startkapital beträgt {0} Euro.",Math.Round(startkapital,2));
+                label4.Text = String.Format("Das benötigte Startkapital beträgt {0} Euro, bei {1} {2}n.",Math.Round(startkapital,2), textBox1.Text, label1.Text.Substring(0, label1.Text.Length - 1));
             } catch (Exception)
             {
                 // Ausgabe aeiner Fehlermeldung in Label4
@@ -589,6 +582,9 @@ namespace Aufgabe_8_GUI
             {
                 switch (comboBox1.SelectedItem.ToString())
                 {
+                        /*
+                         * Kapital Berechnen.
+                         */
                     case ("Kapital berechnen"):
 
                         label7.Visible = false;
@@ -612,6 +608,10 @@ namespace Aufgabe_8_GUI
                         label5.Visible = true;
                         textBox4.Visible = true;
                         break;
+
+                        /*
+                        * Jahre Berechnen.
+                        */ 
                     case ("Jahre berechnen"):
 
                         label7.Visible = false;
@@ -621,7 +621,7 @@ namespace Aufgabe_8_GUI
 
                         label3.Text = "Zins in [%]: ";
 
-                        label1.Visible = false;                   
+                        label1.Visible = true;                   
                         textBox1.Visible = false;
 
                         label2.Visible = true;
@@ -635,6 +635,10 @@ namespace Aufgabe_8_GUI
                         label5.Visible = true;
                         textBox4.Visible = true;
                         break;
+
+                        /*
+                         * Zins berechnen.
+                         */
                     case ("Zins berechnen"):
 
                         label7.Visible = true;
@@ -660,6 +664,10 @@ namespace Aufgabe_8_GUI
                         label5.Visible = true;
                         textBox4.Visible = true;
                         break;
+
+                        /*
+                         * Startkapital Berechnen.
+                         */
                     case ("Startkapital berechnen"):
 
                         label7.Visible = false;
@@ -702,6 +710,11 @@ namespace Aufgabe_8_GUI
             label7.Text = "" + Math.Round(0.01 / trackBar1.Value, 5);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void label1_Click(object sender, EventArgs e)
         {
             switch (label1.Text)
@@ -715,9 +728,107 @@ namespace Aufgabe_8_GUI
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void label8_Click(object sender, EventArgs e)
         {
             label1_Click(sender, e);
         }
+
+        /// <summary>
+        /// Event Handler in der der Zinssatz berechnet wird.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            // Bei Beginn der Rechnung aktuelle Zeit speichern.
+            RechnungsStart = DateTime.Now;
+
+            Jahre = Convert.ToInt32(textBox1.Text);
+            StartKapital = Convert.ToDouble(textBox2.Text);
+
+
+            // Iteratives berechnen des Zinssatzes mit einer vorgegeben Genauigkeit. Durch erhöhen des Zinssatzes, bis dieser ausreichend.
+            while (Kapital <= Ziel)
+            {
+                // Kapitalberechnen für geschätzten Zinssatz.
+                try
+                {
+                    Kapital = kapitalertrag.kapitalNeu(Jahre, StartKapital , Zinssatz);
+                    Zinssatz = Zinssatz + 0.001;
+                } catch (Exception)
+                {
+                    worker.Dispose();
+                    e.Cancel = true;
+                    break;
+                }
+
+                // Wenn beenden ausstehend beenden.
+                if (worker.CancellationPending == true)
+                {
+                    worker.Dispose();
+                    e.Cancel = true;
+                    break;
+                }
+            }
+
+            // Berechnen der benötigten Rechenzeit.
+            RechenZeit = DateTime.Now - RechnungsStart;
+
+        }
+
+        /// <summary>
+        /// Background Worker um Berechnung des Zinssates asynchron zu ermöglichen. (Durch einen zweiten Thread)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled == true)
+            {
+                label4.Text = "Die Berechnung wurde abgebrochen";
+            }
+            else if (e.Error != null)
+            {
+                label4.Text = "Bei der Berechnung ist ein Fehler aufgetreten";
+            }
+            // Wenn Berechnung erfolgreich ausgeführt, den Graphen erstellen Werte ausgeben.
+            else
+            {
+                // Erstellen des Graphen für den berechneten Zinssatz 
+                chart1.Series["Kapital"].Points.AddXY(0, textBox2.Text);
+
+                for (int i = 1; i <= Convert.ToInt32(textBox1.Text); i++)
+                {                 
+                    Kapital = kapitalertrag.kapitalNeu(i, Convert.ToDouble(textBox2.Text), Zinssatz);
+                    chart1.Series["Kapital"].Points.AddXY(i, Kapital);
+                }
+
+                // Ausgabe des Zinssatzes, welcher benötigt wird und der genutzten Genauigkeit.
+                label4.Text = String.Format("Der benötige Zinssatz beträgt {0} Prozent, bei {2} {3}n." + Environment.NewLine +
+                    "(Genauigkeit {1}) Es wurden {4} Millisekunden benötigt.", Math.Round(Zinssatz, 6), textBox4.Text, textBox1.Text, label1.Text.Substring(0, label1.Text.Length - 1), RechenZeit.Milliseconds);
+            }          
+        }
+
+        /// <summary>
+        /// Tritt ein, wenn die Form geschlossen wird. Wird genutzt um Rechnungs Thread zu beenden.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (backgroundWorker1.WorkerSupportsCancellation == true)
+            {
+                // Unterbrechen der asynchronen Berechnung des Zinssatzes.
+                backgroundWorker1.CancelAsync();
+            }
+        }
     }
 }
+
