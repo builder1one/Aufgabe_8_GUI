@@ -23,3 +23,4 @@ C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe
 C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\aa-ET\8_17642_Anwendung.resources.dll
 C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\8_17642_Anwendung.exe
 C:\Users\Eric\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI - Kopie\Aufgabe_8_GUI\obj\Release\8_17642_Anwendung.pdb
+F:\OneDrive - hochschule-stralsund.de\Studium\Semester 2\DV_2\Aufgabe_8_GUI\Aufgabe_8_GUI\obj\Release\Aufgabe_8_GUI.csprojAssemblyReference.cache
